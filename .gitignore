@@ -1,0 +1,11 @@
+# Ignore IDE files
+.vscode
+
+# Compiled object files
+bin/
+
+# CMake build files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
