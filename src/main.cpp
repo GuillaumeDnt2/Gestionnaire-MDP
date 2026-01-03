@@ -1,41 +1,38 @@
 #include "Console/LinuxConsole.hpp"
+#include "Menu/Menu.hpp"
 #include <array>
 #include <string>
+#include <functional>
+#include <iostream>
 
-Console* console = new LinuxConsole();
+const unsigned MENU_SIZE = 3;
 
-void displayMenu(unsigned selectedIndex = 0)
+template<unsigned Size>
+void displayMenu(Console* console, Menu<Size> &menu)
 {
-    const std::array<std::string, 5> menuItems = {
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option quatre",
-        "Exit"
-    };
-
     // Clear the screen
     console->clear();
-
-    for (unsigned int i = 0; i < menuItems.size(); ++i)
-    {
-        if (i == selectedIndex)
-        {
-            // Highlight the selected item
-            console->write("> " + menuItems[i] + " <\n");
-        }
-        else
-        {
-            console->write("  " + menuItems[i] + "\n");
-        }
-    }
+    console->write(menu.show());
 }
 
 int main() {
-    int c;
-    unsigned selectedIndex = 0;
+    const std::array<std::string, MENU_SIZE> menuItems = {
+            "Option 1",
+            "Option 2",
+            "Exit"
+    };
 
-    displayMenu();
+    const std::array<std::function<void()>, MENU_SIZE> menuActions = {
+        [](){std::cout << "Execute option 1" << std::endl;},
+        [](){std::cout << "Execute option 2" << std::endl;},
+        [](){exit(0);}
+    };
+
+    int c;
+    Console* console = new LinuxConsole();
+    Menu<MENU_SIZE> menu = Menu<MENU_SIZE>(menuItems, menuActions);
+
+    displayMenu<MENU_SIZE>(console, menu);
 
     while (true)
     {
@@ -44,15 +41,21 @@ int main() {
             if (console->readKey() == '[') { 
                 switch (console->readKey()) { 
                     case 'A': 
-                        selectedIndex == 0 ? selectedIndex = 3 : selectedIndex--;
+                        menu.select(-1);
                         break; // flèche haut 
-                    case 'B': selectedIndex == 3 ? selectedIndex = 0 : selectedIndex++;
+                    case 'B': 
+                        menu.select(1);
                         break; // flèche bas 
                     } 
                 }
-                displayMenu(selectedIndex);
-            }
-    
+        } else if (c == 10) { // Enter key
+            menu.executeSelected();
+            console->write("Press any key to continue...\n");
+            console->readKey();
+        } else {
+            break; // Exit on any other key
+        }
+        displayMenu<MENU_SIZE>(console, menu);
     }
     
     delete console;
