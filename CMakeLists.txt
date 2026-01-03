@@ -14,4 +14,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 
 # add the executable
-add_executable(Test ./src/main.cpp)
+add_executable(Test ./src/main.cpp ./src/Console/LinuxConsole.cpp)
