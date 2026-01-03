@@ -1,3 +1,6 @@
+#ifndef LINUXCONSOLE_HPP
+#define LINUXCONSOLE_HPP
+
 #include "Console.hpp"
 #include <string>
 #include <termios.h>
@@ -14,3 +17,5 @@ public:
     std::string readLine() override;
     void clear() override;
 };
+
+#endif // LINUXCONSOLE_HPP
