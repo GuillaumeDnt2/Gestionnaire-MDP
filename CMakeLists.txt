@@ -26,7 +26,7 @@ message(STATUS "OpenSSL libraries  : ${OPENSSL_LIBRARIES}")
 add_executable(Test
     ./src/main.cpp
     ./src/Console/LinuxConsole.cpp
-    ./src/Menu/Menu.hpp
+    ./src/Menu/Menu.cpp
     ./src/Encryption/AES.cpp
 )
 
