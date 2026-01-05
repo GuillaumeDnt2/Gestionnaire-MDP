@@ -80,14 +80,6 @@ void decode(){
     LinuxConsole().write("Decoded: " + vectorToString(text) + "\n");
 }
 
-void displayMenu(Console* console, Menu &menu)
-{
-    // Clear the screen
-    console->clear();
-    console->write(menu.show());
-}
-
-
 
 int main() {
     const std::vector<std::string> menuItems = {
@@ -104,33 +96,9 @@ int main() {
 
     int c;
     Console* console = new LinuxConsole();
-    Menu menu = Menu(menuItems, menuActions);
+    Menu menu = Menu(menuItems, menuActions, console, true);
 
-    displayMenu(console, menu);
-
-    while (true)
-    {
-        c = console->readKey();
-        if (c == 27) { // ESC 
-            if (console->readKey() == '[') { 
-                switch (console->readKey()) { 
-                    case 'A': 
-                        menu.select(-1);
-                        break; // flèche haut 
-                    case 'B': 
-                        menu.select(1);
-                        break; // flèche bas 
-                    } 
-                }
-        } else if (c == 10) { // Enter key
-            menu.executeSelected();
-            console->write("Press any key to continue...\n");
-            console->readKey();
-        } else {
-            break; // Exit on any other key
-        }
-        displayMenu(console, menu);
-    }
+    menu.launch();
     
     delete console;
     return 0;

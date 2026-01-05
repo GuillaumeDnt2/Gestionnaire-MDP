@@ -15,6 +15,7 @@ public:
     void write(const std::string& message) override;
     char readKey() override;
     std::string readLine() override;
+    CTRL readControle() override;
     void clear() override;
 };
 

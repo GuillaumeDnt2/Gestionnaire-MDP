@@ -46,6 +46,29 @@ std::string LinuxConsole::readLine()
     return line;
 }
 
+Console::CTRL LinuxConsole::readControle(){
+    while (true)
+    {
+        switch (readKey())
+        {
+        case 10:
+            return Console::ENTER;
+
+        case 27:
+            if(readKey() == '['){
+                switch (readKey())
+                {
+                case 'A':
+                    return Console::UP;
+                
+                case 'B':
+                    return Console::DOWN;
+                }
+            }
+        }
+    }
+}
+
 void LinuxConsole::clear()
 {
     std::cout << "\033[H\033[2J";
