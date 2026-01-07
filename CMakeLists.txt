@@ -28,6 +28,8 @@ add_executable(Test
     ./src/Console/LinuxConsole.cpp
     ./src/Menu/Menu.cpp
     ./src/Encryption/AES.cpp
+    ./src/Vault/Vault.cpp
+    ./src/Vault/VaultMngr.cpp
 )
 
 # --- Include directories ---
