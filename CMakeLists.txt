@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(Test VERSION 0.1 LANGUAGES CXX)
+project(PswdMngr VERSION 0.1 LANGUAGES CXX)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 23)
@@ -23,9 +23,10 @@ message(STATUS "OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
 message(STATUS "OpenSSL libraries  : ${OPENSSL_LIBRARIES}")
 
 # --- Add executable ---
-add_executable(Test
+add_executable(PswdMngr
     ./src/main.cpp
     ./src/Console/LinuxConsole.cpp
+    ./src/Console/GlobalCsl.cpp
     ./src/Menu/Menu.cpp
     ./src/Encryption/AES.cpp
     ./src/Vault/Vault.cpp
@@ -33,7 +34,7 @@ add_executable(Test
 )
 
 # --- Include directories ---
-target_include_directories(Test PRIVATE ${OPENSSL_INCLUDE_DIR})
+target_include_directories(PswdMngr PRIVATE ${OPENSSL_INCLUDE_DIR})
 
 # --- Link OpenSSL ---
-target_link_libraries(Test PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(PswdMngr PRIVATE OpenSSL::SSL OpenSSL::Crypto)

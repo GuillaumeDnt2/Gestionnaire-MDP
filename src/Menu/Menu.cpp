@@ -1,21 +1,18 @@
 #include <string>
 
 #include "Menu.hpp"
+#include "../Console/GlobalCsl.hpp"
 
-Menu::Menu(const std::vector<std::string>& _values, const std::vector<std::function<void()>>& _actions, Console* _console, bool noReturn):
-selectedIndex(0), values(_values), actions(_actions), repeat(true), console(_console)
+Menu::Menu(const std::vector<std::string>& _values, const std::vector<std::function<void()>>& _actions, bool noReturn):
+selectedIndex(0), values(_values), actions(_actions), repeat(true)
 {
     if(values.size() != actions.size()){
         throw "Menu vectors must be the same size";
     }
 
-    if(console == nullptr){
-        throw "Console can't be null";
-    }
-
     if(!noReturn){
         values.push_back("Retour");
-        actions.push_back([this](){repeat = false;});
+        actions.push_back([this](){stop();});
     }
 
     size = values.size();
@@ -42,7 +39,7 @@ void Menu::selectUp(){
 
 void Menu::selectDown(){
     unsigned newIndex = selectedIndex + 1;
-    if(selectedIndex == size){
+    if(newIndex == size){
         newIndex = 0;
     }
 
@@ -68,8 +65,8 @@ std::string Menu::toString(){
 }
 
 void Menu::display(){
-    console->clear();
-    console->write(toString());
+    GlobaleCSL::get()->clear();
+    GlobaleCSL::get()->write(toString());
 }
 
 void Menu::launch(){
@@ -77,7 +74,7 @@ void Menu::launch(){
     repeat = true;
     while (repeat)
     {
-        switch (console->readControle())
+        switch (GlobaleCSL::get()->readControle())
         {
         case Console::UP :
             selectUp();
@@ -91,8 +88,21 @@ void Menu::launch(){
 
         case Console::ENTER :
             executeSelected();
+            display();
             break;
         }
     }
     
+}
+
+void Menu::stop()
+{
+    repeat = false;
+}
+
+void Menu::addAction(const std::string &value, const std::function<void()> &action)
+{
+    values.push_back(value);
+    actions.push_back(action);
+    size++;
 }
